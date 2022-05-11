@@ -57,6 +57,7 @@ function _convertOutputToJson(rows){
         }
         data.push(rowObject);
     }
+    return data
 }
 
 app.get("/slider", async(req, res) => {
@@ -69,7 +70,7 @@ app.get("/slider", async(req, res) => {
     const googleSheets = google.sheets({ version: "v4", auth: client });
 
     const sheetId = "1HczFhP-EvCvH5fr4fPXvCO-PTiWIt5hTfhhFXbrlwfo";
-
+    
     const rows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId: sheetId,
