@@ -45,7 +45,7 @@ app.get("/", async(req, res) => {
     let genreRowsToJson = _convertOutputToJson(genreRows)
     let sageRowsToJson = _convertOutputToJson(sageRows)
     let simonSchusterRowsToJson = _convertOutputToJson(simonSchusterRows)
-    res.send({ products: booksRowsToJson, sage: sageRowsToJson, simon: simonSchusterRowsToJson, genre: genreRowsToJson });
+    res.send({ products: {books: booksRowsToJson, sage: sageRowsToJson, simon: simonSchusterRowsToJson}, genre: genreRowsToJson });
 });
 
 function _convertOutputToJson(rows){
