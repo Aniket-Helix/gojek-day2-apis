@@ -31,24 +31,22 @@ app.get("/", async(req, res) => {
         spreadsheetId: sheetId,
         range: "Genre List"
     })
-    let rowsToJson = []
+    
+    let rowsToJson = _convertOutputToJson(rows)
+    let genreRowsToJson = _convertOutputToJson(genreRows)
+    res.send({ products: rowsToJson, genre: genreRowsToJson });
+});
+
+function _convertOutputToJson(rows){
+    let data = []
     for (var i = 1; i < rows.data.values.length; i++) {
         var rowObject = {};
         for (var j = 0; j < rows.data.values[i].length; j++) {
             rowObject[rows.data.values[0][j]] = rows.data.values[i][j];
         }
-        rowsToJson.push(rowObject);
+        data.push(rowObject);
     }
-    let genreRowsToJson = []
-    for (var i = 1; i < genreRows.data.values.length; i++) {
-        var rowObject = {};
-        for (var j = 0; j < genreRows.data.values[i].length; j++) {
-            rowObject[genreRows.data.values[0][j]] = genreRows.data.values[i][j];
-        }
-        genreRowsToJson.push(rowObject);
-    }
-    res.send({ products: rowsToJson, genre: genreRowsToJson });
-});
+}
 
 app.get("/slider", async(req, res) => {
     const auth = new google.auth.GoogleAuth({
@@ -137,3 +135,17 @@ app.get("/blogs", async(req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, (req, res) => console.log("Server is live on 3000"));
+
+
+
+
+// const sageRows = await googleSheets.spreadsheets.values.get({
+//     auth,
+//     spreadsheetId: sheetId,
+//     range: "Sage"
+// })
+// const simonSchusterRows = await googleSheets.spreadsheets.values.get({
+//     auth,
+//     spreadsheetId: sheetId,
+//     range: "Simon Schuster"
+// })
