@@ -24,7 +24,7 @@ app.get("/", async(req, res) => {
     const rows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId: sheetId,
-        range: "Product Sheet"
+        range: "Our Books"
     })
     const genreRows = await googleSheets.spreadsheets.values.get({
         auth,
