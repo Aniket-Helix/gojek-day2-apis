@@ -21,20 +21,31 @@ app.get("/", async(req, res) => {
         auth,
         spreadsheetId: sheetId
     });
-    const rows = await googleSheets.spreadsheets.values.get({
+    const booksRows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId: sheetId,
         range: "Our Books"
+    })
+    const sageRows = await googleSheets.spreadsheets.values.get({
+        auth,
+        spreadsheetId: sheetId,
+        range: "Sage"
+    })
+    const simonSchusterRows = await googleSheets.spreadsheets.values.get({
+        auth,
+        spreadsheetId: sheetId,
+        range: "Simon Schuster"
     })
     const genreRows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId: sheetId,
         range: "Genre List"
     })
-    
-    let rowsToJson = _convertOutputToJson(rows)
+    let booksRowsToJson = _convertOutputToJson(booksRows)
     let genreRowsToJson = _convertOutputToJson(genreRows)
-    res.send({ products: rowsToJson, genre: genreRowsToJson });
+    let sageRowsToJson = _convertOutputToJson(sageRows)
+    let simonSchusterRowsToJson = _convertOutputToJson(simonSchusterRows)
+    res.send({ products: booksRowsToJson, sage: sageRowsToJson, simon: simonSchusterRowsToJson, genre: genreRowsToJson });
 });
 
 function _convertOutputToJson(rows){
@@ -135,17 +146,3 @@ app.get("/blogs", async(req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, (req, res) => console.log("Server is live on 3000"));
-
-
-
-
-// const sageRows = await googleSheets.spreadsheets.values.get({
-//     auth,
-//     spreadsheetId: sheetId,
-//     range: "Sage"
-// })
-// const simonSchusterRows = await googleSheets.spreadsheets.values.get({
-//     auth,
-//     spreadsheetId: sheetId,
-//     range: "Simon Schuster"
-// })
