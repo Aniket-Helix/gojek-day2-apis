@@ -146,4 +146,25 @@ app.get("/blogs", async(req, res) => {
     res.send({ products: rowsToJson });
 });
 
+app.get("/workshops", async(req, res) => {
+    const auth = new google.auth.GoogleAuth({
+        keyFile: "cred.json",
+        scopes: "https://www.googleapis.com/auth/spreadsheets"
+    });
+
+    const client = await auth.getClient();
+    const googleSheets = google.sheets({ version: "v4", auth: client });
+
+    const sheetId = "1HczFhP-EvCvH5fr4fPXvCO-PTiWIt5hTfhhFXbrlwfo";
+
+    const rows = await googleSheets.spreadsheets.values.get({
+        auth,
+        spreadsheetId: sheetId,
+        range: "Workshops"
+    })
+
+    let workshopToJson = _convertOutputToJson(rows)
+    res.send({ workshops: workshopToJson });
+});
+
 app.listen(process.env.PORT || 3000, (req, res) => console.log("Server is live on 3000"));
